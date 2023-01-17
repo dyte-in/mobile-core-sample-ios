@@ -9,15 +9,7 @@
 import UIKit
 
 struct Constants {
-    
-    //V1
-//     static let MEETING_ROOM_NAME = "xvtjxu-twzlgp"
-//     static let AUTH_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFmYjI3N2Y0LWQ4NDgtNDU5ZS1hYmE0LWU3ZGM1NjZkM2I0YSIsImxvZ2dlZEluIjp0cnVlLCJpYXQiOjE2NzA2NTg2MDksImV4cCI6MTY3OTI5ODYwOX0.fpRmvUqhxYBo8L4foncNSjaM4od6t8MwSp3w5JEr1REVDqRxaf6o0gsRg9BjQCw1SurXblZbpQsKybv64r4xIA8Lk0IUFbk8UOq0uzumtvF4adRhdpTmmold0LXDDtE25LO-WulDUl3xQOVNgOJyPe_mgtrp51oYKEwe-jwgNYVkViRC4FnF9wg_3qGgeneWTeDpldw53sCh7lJ7qs2XONdYPEGmuILVA8i3aY195OwJHiemzyMHbHbfnTwzPzhoSpcONnJDsBcW64-_A0frf5wenY5DGFzRUzrM-ZMDRqW6l12ZuQ_H8Das8kiSiy5yDkKQrxvWCgUp_fDcXfDYfQ"
-//    static let BASE_URL = "https://api.cluster.dyte.in"
-    
-    //v2
     static let MEETING_ROOM_NAME = "ircusm-sqvuko"
-    // participant
     static let AUTH_TOKEN = YOUR_TOKEN_HERE
     static let BASE_URL = "https://api.cluster.dyte.in"
     
