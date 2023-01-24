@@ -56,27 +56,24 @@ class ThreeUsersView: UIView {
         if participants.count > 0 {
             let participant = participants[0]
             self.peerOneNameLabel.text = participant.name
-            DyteVideoUtils().setVideoEnabled(view: peerOneVideoView, enabled: participant.videoEnabled)
 
             peerOneHideButton.setImage(UIImage(systemName: participant.videoEnabled ? "video" : "video.slash"), for: .normal)
             let participantAudioEnabled = participant.audioEnabled
             peerOneMutebutton.setImage(UIImage(systemName: participantAudioEnabled ? "volume.3" : "volume.slash"), for: .normal)
             
-            let dyteView = DyteVideoUtils().getViewFor(participant: participant, isScreenShare: false)
+            let dyteView = DyteIOSVideoUtils().getVideoView(participant: participant)
             dyteView.frame = peerOneVideoView.bounds
             peerOneVideoView.addSubview(dyteView)
         }
         if participants.count > 1 {
             let participant = participants[1]
             self.peerTwoNameLabel.text = participant.name
-            
             let participantVideoEnabled = participant.videoEnabled
-            DyteVideoUtils().setVideoEnabled(view: peerTwoVideoView, enabled: participant.videoEnabled)
 
             peerTwoHideButton.setImage(UIImage(systemName: participantVideoEnabled ? "video" : "video.slash"), for: .normal)
             let participantAudioEnabled = participant.audioEnabled
             peerTwoMutebutton.setImage(UIImage(systemName: participantAudioEnabled ? "volume.3" : "volume.slash"), for: .normal)
-            let dyteView = DyteVideoUtils().getViewFor(participant: participant, isScreenShare: false)
+            let dyteView = DyteIOSVideoUtils().getVideoView(participant: participant)
             dyteView.frame = peerTwoVideoView.bounds
             peerTwoVideoView.addSubview(dyteView)
         }
@@ -84,7 +81,7 @@ class ThreeUsersView: UIView {
         if participants.count > 2 {
             let participant = participants[2]
             self.selfViewNameLabel.text = participant.name
-            let dyteView = DyteVideoUtils().getViewFor(participant: participant, isScreenShare: false)
+            let dyteView = DyteIOSVideoUtils().getVideoView(participant: participant)
             dyteView.frame = selfVideoView.bounds
             selfVideoView.addSubview(dyteView)
         }

@@ -8,7 +8,7 @@
 
 import UIKit
 import DyteiOSCore
-import AVFAudio
+import AVKit
 class MeetingRoomViewController: UIViewController {
     
     @IBOutlet weak var screenshareView: UIView!
@@ -50,8 +50,8 @@ class MeetingRoomViewController: UIViewController {
     }
     
     private func setupUI() {
-        screenshareStackView.isHidden = true
-        screenshareView.isHidden = true
+        screenshareStackView.isHidden = false
+        screenshareView.isHidden = false
         moreStack.isHidden = true
         pageControl.isHidden = true
         participantsStatusButton.setTitle("\(meetingViewModel?.participants.count ?? 0)", for: .normal)
@@ -62,7 +62,7 @@ class MeetingRoomViewController: UIViewController {
         disconnectButton.setTitle("", for: .normal)
         videoToggleButton.setTitle("", for: .normal)
         cameraButton.setTitle("", for: .normal)
-        
+        screenshareCollectionView.delegate = self
         screenshareCollectionView.register(UINib(nibName: "ScreenshareCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ScreenshareCollectionViewCell")
     }
     
@@ -95,6 +95,7 @@ class MeetingRoomViewController: UIViewController {
                     dyteMobileClient?.addMeetingRoomEventsListener(meetingRoomEventsListener: meetingModel)
                     dyteMobileClient?.addParticipantEventsListener(participantEventsListener: meetingModel)
                     dyteMobileClient?.addSelfEventsListener(selfEventsListener: meetingModel)
+                    dyteMobileClient?.addParticipantEventsListener(participantEventsListener: meetingModel)
                     dyteMobileClient?.doInit(dyteMeetingInfo: info)
                 } else {
                     print("Error: meetingModel is nil!")
@@ -142,7 +143,7 @@ class MeetingRoomViewController: UIViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Storyboard", bundle:nil)
         let chatViewController = storyBoard.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
         chatViewController.dyteMobileClient = dyteMobileClient
-        chatViewController.meetingViewModel = meetingViewModel  
+        chatViewController.meetingViewModel = meetingViewModel
         self.present(chatViewController, animated:true, completion:nil)
     }
     
@@ -432,7 +433,7 @@ extension MeetingRoomViewController: MeetingDelegate {
     
     private func setSelfVideo(selfVideoView: PeerCollectionViewCell) {
         if let user = self.dyteMobileClient?.localUser {
-            let selfView = DyteVideoUtils().getViewFor(participant: user, isScreenShare: false)
+            let selfView = DyteIOSVideoUtils().getVideoView(participant: user)
             selfView.frame = selfVideoView.videoView.bounds
             selfVideoView.videoView.addSubview(selfView)
             selfVideoView.nameLabel.text = self.dyteMobileClient?.localUser.name
@@ -489,11 +490,11 @@ extension MeetingRoomViewController: UICollectionViewDelegate, UICollectionViewD
         } else {
             for screenshare in meetingViewModel?.screenshares ?? [] {
                 selectedScreenShareIndex = nil
-                DyteVideoUtils().remove(track: screenshare.screenShareTrack, view: self.screenshareView)
+                DyteIOSVideoUtils().destroyView(participant: screenshare)
             }
             
             if (meetingViewModel?.screenshares.count ?? 0) > indexPath.row, let ssParticipant = meetingViewModel?.screenshares[indexPath.row] {
-                DyteVideoUtils().add(track: ssParticipant.screenShareTrack, view: self.screenshareView)
+                self.screenshareView = DyteIOSVideoUtils().getScreenShareView(participant: ssParticipant)
                 selectedScreenShareIndex = indexPath.row
                 screenshareView.isHidden = false
             }

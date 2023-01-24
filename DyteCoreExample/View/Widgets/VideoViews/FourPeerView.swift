@@ -70,14 +70,12 @@ class FourPeerView: UIView {
             let participant = participants[0]
             self.peerOneNameLabel.text = participant.name
             let participantVideoEnabled = participant.videoEnabled
-            DyteVideoUtils().setVideoEnabled(view: peerOneVideoView, enabled: participantVideoEnabled)
-
 
             peerOneHideButton.setImage(UIImage(systemName: participantVideoEnabled ? "video" : "video.slash"), for: .normal)
             let participantAudioEnabled = participant.audioEnabled
             peerOneMutebutton.setImage(UIImage(systemName: participantAudioEnabled ? "volume.3" : "volume.slash"), for: .normal)
                             
-            let dyteView = DyteVideoUtils().getViewFor(participant: participant, isScreenShare: false)
+            let dyteView = DyteIOSVideoUtils().getVideoView(participant: participant)
             dyteView.frame = peerOneVideoView.bounds
             peerOneVideoView.addSubview(dyteView)
         }
@@ -86,13 +84,12 @@ class FourPeerView: UIView {
             let participant = participants[1]
             self.peerTwoNameLabel.text = participant.name
             let participantVideoEnabled = participant.videoEnabled
-            DyteVideoUtils().setVideoEnabled(view: peerTwoVideoView, enabled: participantVideoEnabled)
 
             peerTwoHideButton.setImage(UIImage(systemName: participantVideoEnabled ? "video" : "video.slash"), for: .normal)
             let participantAudioEnabled = participant.audioEnabled
             peerTwoMutebutton.setImage(UIImage(systemName: participantAudioEnabled ? "volume.3" : "volume.slash"), for: .normal)
             
-            let dyteView = DyteVideoUtils().getViewFor(participant: participant, isScreenShare: false)
+            let dyteView = DyteIOSVideoUtils().getVideoView(participant: participant)
             dyteView.frame = peerTwoVideoView.bounds
             peerTwoVideoView.addSubview(dyteView)
         }
@@ -101,13 +98,12 @@ class FourPeerView: UIView {
             let participant = participants[2]
             self.peerThreeNameLabel.text = participant.name
             let participantVideoEnabled = participant.videoEnabled
-            DyteVideoUtils().setVideoEnabled(view: peerThreeVideoView, enabled: participantVideoEnabled)
 
             peerThreeHideButton.setImage(UIImage(systemName: participantVideoEnabled ? "video" : "video.slash"), for: .normal)
             let participantAudioEnabled = participant.audioEnabled
             peerThreeMutebutton.setImage(UIImage(systemName: participantAudioEnabled ? "volume.3" : "volume.slash"), for: .normal)
             
-            let dyteView = DyteVideoUtils().getViewFor(participant: participant, isScreenShare: false)
+            let dyteView = DyteIOSVideoUtils().getVideoView(participant: participant)
             dyteView.frame = peerThreeVideoView.bounds
             peerThreeVideoView.addSubview(dyteView)
         }
@@ -116,13 +112,12 @@ class FourPeerView: UIView {
             let participant = participants[3]
             self.peerFourNameLabel.text = participant.name
             let participantVideoEnabled = participant.videoEnabled
-            DyteVideoUtils().setVideoEnabled(view: peerFourVideoView, enabled: participantVideoEnabled)
 
             peerFourHideButton.setImage(UIImage(systemName: participantVideoEnabled ? "video" : "video.slash"), for: .normal)
             let participantAudioEnabled = participant.audioEnabled
             peerFourMutebutton.setImage(UIImage(systemName: participantAudioEnabled ? "volume.3" : "volume.slash"), for: .normal)
             
-            let dyteView = DyteVideoUtils().getViewFor(participant: participant, isScreenShare: false)
+            let dyteView = DyteIOSVideoUtils().getVideoView(participant: participant)
             dyteView.frame = peerFourVideoView.bounds
             peerFourVideoView.addSubview(dyteView)
         }

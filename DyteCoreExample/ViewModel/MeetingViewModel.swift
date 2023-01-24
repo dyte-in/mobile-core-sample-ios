@@ -7,6 +7,7 @@
 //
 import DyteiOSCore
 import UIKit
+
 protocol MeetingDelegate {
     func refreshList()
     func onMeetingRoomLeft()
@@ -68,15 +69,12 @@ final class MeetingViewModel {
 
 extension MeetingViewModel: DyteParticipantEventsListener {
     func onAudioUpdate(audioEnabled: Bool, participant: DyteMeetingParticipant) {
-        
+        meetingDelegate?.refreshList()
+        participantsDelegate?.refreshList()
     }
     
     func onGridUpdated(gridInfo: GridInfo) {
-        for participant in participants {
-            participantDict[participant.id] = UIView()
-        }
-        meetingDelegate?.refreshList()
-        participantsDelegate?.refreshList()
+        
     }
     
     func onVideoUpdate(videoEnabled: Bool, participant: DyteMeetingParticipant) {
@@ -86,7 +84,6 @@ extension MeetingViewModel: DyteParticipantEventsListener {
     func onActiveParticipantsChanged(active: [DyteMeetingParticipant]) {
         
     }
-    
     
     func onWaitListParticipantAccepted(participant: DyteMeetingParticipant) {
         
@@ -110,10 +107,22 @@ extension MeetingViewModel: DyteParticipantEventsListener {
         }
         meetingDelegate?.refreshList()
         participantsDelegate?.refreshList()
+        
+        screenshares.removeAll()
+        if let screenShares = dyteMobileClient?.participants.screenshares {
+            for ssParticipant in screenShares {
+                screenshares.append(ssParticipant)
+            }
+            refreshData()
+        }
     }
     
     func onParticipantsUpdated(participants: DyteRoomParticipants, isNextPagePossible: Bool, isPreviousPagePossible: Bool) {
-        
+        for participant in participants.joined {
+            participantDict[participant.id] = UIView()
+        }
+        meetingDelegate?.refreshList()
+        participantsDelegate?.refreshList()
     }
     
     func onParticipantPinned(participant: DyteMeetingParticipant) {
@@ -140,11 +149,6 @@ extension MeetingViewModel: DyteParticipantEventsListener {
     
     func onNoActiveSpeaker() {
         
-    }
-    
-    func audioUpdate(audioEnabled: Bool, participant: DyteMeetingParticipant) {
-        meetingDelegate?.refreshList()
-        participantsDelegate?.refreshList()
     }
     
     func videoUpdate(videoEnabled: Bool, participant: DyteMeetingParticipant) {
@@ -205,13 +209,29 @@ extension MeetingViewModel: DyteSelfEventsListener {
         meetingDelegate?.refreshList()
         participantsDelegate?.refreshList()
     }
-    
-    func onMeetingRecordingStateUpdated(state: DyteRecordingState) {
-        
-    }
 }
 
 extension MeetingViewModel: DyteMeetingRoomEventsListener {
+    func onChatUpdates(messages: [DyteChatMessage]) {
+        chatDelegate?.refreshMessages()
+    }
+    
+    func onMeetingRecordingStateUpdated(state: DyteRecordingState) {
+        refreshData()
+    }
+    
+    func onNewChatMessage(message: DyteChatMessage) {
+        
+    }
+    
+    func onNewPoll(poll: DytePollMessage) {
+        
+    }
+    //
+    func onPollUpdates(pollMessages: [DytePollMessage]) {
+        refreshPolls(pollMessages: pollMessages)
+    }
+    
     func onWaitingRoomEntered() {
         
     }
@@ -258,11 +278,7 @@ extension MeetingViewModel: DyteMeetingRoomEventsListener {
     func onMeetingInitStarted() {
         //1
     }
-    
-    
-    func onChatUpdates(newMessage: Bool, message: DyteChatMessage?, messages: [DyteChatMessage]) {
-        chatDelegate?.refreshMessages()
-    }
+
     
     func onMeetingRecordingEnded() {
         refreshData()
@@ -341,3 +357,42 @@ extension MeetingViewModel: DyteMeetingRoomEventsListener {
     
 }
 
+extension MeetingViewModel: DyteParticipantUpdateListener {
+    func onAudioUpdate(participant: DyteMeetingParticipant, isEnabled: Bool) {
+        
+    }
+    
+    func onPinned(participant: DyteMeetingParticipant) {
+        
+    }
+    
+    func onScreenShareEnded(participant: DyteMeetingParticipant) {
+        screenshares.removeAll()
+        if let screenShares = dyteMobileClient?.participants.screenshares {
+            for ssParticipant in screenShares {
+                screenshares.append(ssParticipant)
+            }
+            refreshData()
+        }
+    }
+    
+    func onScreenShareStarted(participant: DyteMeetingParticipant) {
+        screenshares.removeAll()
+        if let screenShares = dyteMobileClient?.participants.screenshares {
+            for ssParticipant in screenShares {
+                screenshares.append(ssParticipant)
+            }
+            refreshData()
+        }
+    }
+    
+    func onUnpinned(participant: DyteMeetingParticipant) {
+        
+    }
+    
+    func onVideoUpdate(participant: DyteMeetingParticipant, isEnabled: Bool) {
+        
+    }
+    
+    
+}
